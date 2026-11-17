@@ -1,33 +1,16 @@
-# Tuningrechner (Render, Node-Dienst)
+# Tuningrechner
 
-Dateien: `server.js`, `package.json`, `render.yaml`, `public/index.html`, `supabase/schema.sql`. Der Server liefert nur die Seite aus (keine Variablen, kein Login, keine Festplatte nötig).
+Reiner Rechner: Leistungen antippen, Menge ändern, Rabatt eintragen, unten steht der Kundenpreis. Einzelpreise sind auf der Seite ausgeblendet, keine Bilder, keine Rechnung, kein Login.
 
-## Auf eine bestehende Render-Seite aufspielen
-1. ZIP entpacken. Im GitHub-Repository „Add file → Upload files“, alle Dateien und die Ordner `public` und `supabase` hochladen (Gleichnamiges wird überschrieben, nichts in einem Unterordner).
-2. Render deployt automatisch neu, sonst „Manual Deploy → Deploy latest commit“. „Root Directory“ leer lassen, Start-Befehl `node server.js`.
+## In GitHub einfügen (bestehendes Repository)
+1. ZIP entpacken.
+2. Im GitHub-Repository: **Add file → Upload files**. Alle entpackten Dateien (`index.html`, `server.js`, `package.json`, `render.yaml`, `README.md`) per Drag & Drop hineinziehen. Sie müssen **ganz oben** im Repository liegen, nicht in einem Unterordner. Gleichnamige Dateien werden überschrieben.
+3. **Commit changes** klicken.
+4. Render veröffentlicht automatisch neu (sonst: Dienst öffnen → Manual Deploy → Deploy latest commit). In Render muss „Root Directory“ leer sein und der Start-Befehl `node server.js` lauten.
 
-## Funktionen
-- Leistungen antippen, Menge ändern, Fahrzeugklasse und Rabatt wählen. Unten steht groß der **Kundenpreis**.
-- Einzelpreise sind auf der Seite ausgeblendet. Sie stehen nur im Dialog „✏️ Leistungen verwalten“, wo du Preise ändern, Leistungen hinzufügen und löschen kannst.
-- Fahrzeugklassen mit Faktor (Standard: Normal ×1, Hypercar ×1,9), im Dialog „⚙️ Klassen verwalten“ änderbar.
-- „📋 Text kopieren“ liefert Leistungen und Kundenpreis ohne Einzelpreise. „🗑️ Leeren“ setzt die Auswahl zurück.
-- Keine Bilder, keine Rechnungsfunktion, kein Login. Die Seite ist öffentlich.
+## Neue Seite auf Render
+- **Variante A (Static Site):** New → Static Site → Repository wählen → Build Command leer lassen → Publish Directory `.` → Create.
+- **Variante B (Web Service):** New → Web Service → Runtime Node → Build Command `echo ok` → Start Command `node server.js`.
 
-## Wo werden die Daten gespeichert?
-- **Ohne Cloud-Speicher** (Standard nach dem Hochladen): nur im Browser des jeweiligen Geräts. Das ist **nicht** dauerhaft und nicht geräteübergreifend: Die Daten sind weg, wenn der Browser-Speicher gelöscht wird, im privaten Modus oder auf einem anderen Gerät. Die Seite zeigt „💾 Nur in diesem Browser gespeichert“.
-- **Mit Cloud-Speicher** (Supabase, kostenlos): Jede Änderung wird automatisch auf dem Server gespeichert und mit allen Geräten geteilt, die denselben Link benutzen. Die Seite zeigt „☁️ In der Cloud gespeichert“ oder eine Fehlermeldung.
-
-## Cloud-Speicher einrichten (einmalig, ca. 10 Minuten)
-1. Auf supabase.com ein Konto anlegen und ein neues Projekt erstellen (Region in Europa).
-2. Links **SQL Editor** → neue Abfrage → kompletten Inhalt von `supabase/schema.sql` einfügen → **Run**.
-3. **Project Settings → API**: **Project URL** und **anon public**-Schlüssel (neu: „publishable key“) kopieren. Niemals den `service_role`-Schlüssel verwenden.
-4. In `index.html` die Zeile mit `SUPABASE_URL:""` und `SUPABASE_ANON_KEY:""` suchen (nahe dem Ende des Quelltexts) und deine Werte in die Anführungszeichen einsetzen. Auf GitHub geht das im Browser über das Stift-Symbol. Dann „Commit changes“.
-5. Nach dem Neu-Deployen die Seite öffnen. Beim ersten Besuch legt sie automatisch einen Arbeitsbereich an. Der Code steht im Link nach `#w=` und im Dialog **☁️ Cloud**.
-6. Auf anderen Geräten oder für andere Personen: im Dialog „☁️ Cloud“ auf „Link kopieren“ klicken und den Link weitergeben.
-
-## Wichtig
-- **Wer den Link (mit Code) hat, kann alles sehen und ändern.** Ohne Code ist kein Zugriff möglich.
-- Ändern zwei Geräte gleichzeitig, überschreibt keins stillschweigend das andere: Die Seite meldet einen Konflikt, und du wählst, welcher Stand gilt.
-- Ist die Cloud kurz nicht erreichbar, speichert die Seite lokal weiter und lädt später automatisch hoch.
-- Kostenlose Supabase-Projekte werden nach etwa einer Woche ohne Aktivität pausiert (bitte aktuell prüfen). Dann ist die Cloud nicht erreichbar, bis du das Projekt wieder startest. Die Daten bleiben erhalten.
-- Neue Preisliste auf einer bestehenden Seite: Wer die vorherige Standardliste unverändert hatte, bekommt die neue automatisch. Eigene, veränderte Listen bleiben unangetastet. „↺ Standardliste“ im Dialog „Leistungen verwalten“ stellt die 34 Leistungen wieder her.
+## Preise ändern
+Auf der Seite: **✏️ Leistungen verwalten**. Wichtig: Änderungen werden nur im Browser des jeweiligen Geräts gespeichert, nicht auf dem Server. Wer dauerhaft eine neue Preisliste für alle möchte, lässt sie im Code ändern (`index.html`, Zeile mit `PARTS0`).
